@@ -37,12 +37,13 @@ void Player::Update(GameManager* gm, Camera* camera) {
 	if (!tyakuti_) {
 
 		velocity_.y -= 0.3f;
+	}
 
-		if (pos_.y < size_.y) {
-			velocity_.y = 0;
-			pos_.y = size_.y;
-			tyakuti_ = true;
-		}
+	if (pos_.y < size_.y) {
+		velocity_.y = 0;
+		pos_.y = size_.y;
+		tyakuti_ = true;
+		sExtendT = 0.0f;
 	}
 
 	if (isExtend_) {
@@ -63,7 +64,7 @@ void Player::SideExtend() {
 
 	if (!tyakuti_) {
 
-
+		sExtendT += 0.3f;
 
 	}
 	else {
@@ -75,7 +76,7 @@ void Player::SideExtend() {
 			isExtend_ = false;
 		}
 
-		expos_.y = sinf(sExtendT + float(M_PI)) * 0.3f * size_.y;
+		expos1_.y = sinf(sExtendT + float(M_PI)) * 0.3f * size_.y;
 
 		scale_.y = sinf(sExtendT + float(M_PI)) * 0.3f + 1.0f;
 		scale_.x = sinf(sExtendT) * 0.6f + 1.0f;

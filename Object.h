@@ -81,7 +81,7 @@ protected:
 	
 	//座標系
 	Vector2 pos_;			//ワールド座標系のプレイヤーの中心
-	Vector2 expos_;			//調整用pos
+	Vector2 expos1_;			//調整用pos
 	Vector2 size_;			//オブジェクトの大きさ
 	Vector2 scale_;			//プレイヤーの大きさの倍率
 	Vector2 rotatePos_;		//kSTR行列の中心

@@ -50,7 +50,7 @@ void Object::InitializeObj(float x, float y, float sizex, float sizey, unsigned 
 	
 	/**********************座標関係****************************/
 	this->pos_ = { x, y };
-	this->expos_ = { 0 };
+	this->expos1_ = { 0 };
 	this->scale_ = { 1.0f, 1.0f };
 	this->theta_ = 0.0f;
 	this->speed_ = 0;
@@ -182,7 +182,7 @@ void Shape::SReady(MatrixMode mode, int bright, Camera* const camera) {
 	this->LB_ = UF::Multiply(this->baseLB_, this->infLB_);
 	this->RB_ = UF::Multiply(this->baseRB_, this->infRB_);
 
-	parentPos_ = { pos_.x + expos_.x, pos_.y + expos_.y };
+	parentPos_ = { pos_.x + expos1_.x, pos_.y + expos1_.y };
 
 	//色の設定
 	this->SetColor(bright);
