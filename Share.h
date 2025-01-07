@@ -1,7 +1,9 @@
 ﻿#pragma once
 #include <vector>
 #include "Object.h"
+#include "Player.h"
 
+class PlayScene;
 
 /// <summary>
 /// ShareParticleの種類
@@ -39,6 +41,11 @@ public:
 	/// </summary>
 	void ParticleUpdate();
 
+	/// <summary>
+	/// パーティクルのDraw関数
+	/// </summary>
+	void Draws();
+
 	bool GetIsActive();
 
 	SParticleMode mode_;
@@ -64,7 +71,7 @@ public:
 	/// スタック領域にパーティクルを作り、particlesの末尾にどんどん入れていく
 	/// </summary>
 	/// <param name="particles">パーティクルの集まり</param>
-	void Appearance(SEmitter* emitter, std::vector<SParticle>* particles);
+	void Appearance(std::vector<SParticle>* particles);
 
 private:
 
@@ -99,9 +106,8 @@ public:
 	/// パーティクルの初期化
 	/// </summary>
 	void Initialize(TParticleMode mode, float x, float y, float sizex, float sizey,
-		GHName GH, int maxWith, int maxHeight, float GHsizex, float GHsizey,
+		GHName GH, float GHsizex, float GHsizey, int cooltime, int maxWidth, int maxHeight,
 		unsigned int color, int bright, bool isActive, BlendMode blend, float nowx, float nowy);
-
 
 	/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-ここにパーティクルの種類だけ関数を追加していく=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
@@ -113,7 +119,7 @@ public:
 	/// <summary>
 	/// Landingモードのパーティクル更新処理
 	/// </summary>
-	void LandingUpdate();
+	void LandingUpdate(Player* player, Camera* camera, GameManager* gm);
 
 
 	/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-ここにパーティクルの種類だけ関数を追加していく=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -122,7 +128,12 @@ public:
 	/// <summary>
 	/// パーティクルの総合更新処理
 	/// </summary>
-	void ParticleUpdate();
+	void ParticleUpdate(PlayScene* ps);
+
+	/// <summary>
+	/// パーティクルのDraw関数
+	/// </summary>
+	void Draws();
 
 
 	/// <summary>
@@ -145,14 +156,18 @@ class TEmitter {
 public:
 
 	void Initialize(TParticleMode mode, int num, int cooltime, bool emitterIsActive, float x, float y, float sizex, float sizey,
-		GHName GH, int maxWith, int maxHeight, float GHsizex = 1, float GHsizey = 1,
+		GHName GH, float srcx, float srcy, int cooltimes = 1, int widthNum = 1, int heightNum = 1,
 		unsigned int color = 0xffffffff, int bright = 0xff, bool isActive = true, BlendMode blend = kBlendModeNormal, float nowx = 0, float nowy = 0);
 
 	/// <summary>
 	/// スタック領域にパーティクルを作り、particlesの末尾にどんどん入れていく
 	/// </summary>
 	/// <param name="particles">パーティクルの集まり</param>
-	void Appearance(TEmitter* emitter, std::vector<TParticle>* particles);
+	void Appearance(std::vector<TParticle>* particles);
+
+	void SetIsActive(bool isActive);
+
+	TParticleMode GetMode();
 
 private:
 
@@ -188,13 +203,19 @@ public:
 	/// <param name="particle">パーティクルの値操作用変数</param>
 	/// <param name="particles">パーティクル全体のリスト。isActiveがfalseになった際に要素を消去するために用いる</param>
 	/// <param name="index">particlesの中のparticleの現在位置。同じく消去に用いる</param>
-	void TextureParticleUpdate();
+	void TextureParticleUpdate(PlayScene* ps);
+
+
+	void Draw();
 
 
 	/*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*アクセサーメソッド+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*/
 	
 	std::vector<SParticle>* GetSParticle();
 	std::vector<TParticle>* GetTParticle();
+
+	int GetSPSize();
+	int GetTPSize();
 
 private:
 

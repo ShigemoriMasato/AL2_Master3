@@ -3,6 +3,7 @@
 #include "GameManager.h"
 #include "Share.h"
 #include "Player.h"
+#include "Ground.h"
 
 class PlayScene {
 public:
@@ -12,11 +13,15 @@ public:
 	/// <summary>
 	/// 全体の更新処理
 	/// </summary>
-	void Update(GameManager* gm, Share* share, Camera* camera);
+	void Update();
 	/// <summary>
 	/// 全体の描画処理
 	/// </summary>
 	void Draw();
+
+	Player* GetPlayer();
+	Camera* GetCamera();
+	GameManager* GetGameManager();
 
 private:
 	//背景
@@ -24,6 +29,12 @@ private:
 
 	//使用するObject
 	Player* player_;
+
+	//ゲーム設定
+	GameManager* gm_;
+	Camera* camera_;
+	Share* share_;
+	Ground* ground_;
 
 	//Emitter
 	std::vector<SEmitter> sEmitter_;

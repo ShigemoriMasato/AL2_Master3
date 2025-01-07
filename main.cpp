@@ -1,7 +1,7 @@
 #include <Novice.h>
 #include <math.h>
-#include "Player.h"
-#include "Share.h"
+#include <time.h>
+#include "PlayScene.h"
 
 const char kWindowTitle[] = "LC1A_10_シゲモリ_マサト_AnkoGaNoboruGame";
 
@@ -15,6 +15,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ライブラリの初期化
 	Novice::Initialize(kWindowTitle, WinSizeWidth, WinSizeHeight);
 
+	PlayScene* playscene = new PlayScene();
+
+	globalTexture[kTest_GH] = Novice::LoadTexture("./NoviceResources/white1x1.png");
+	globalTexture[kParticle_GH] = Novice::LoadTexture("./Resources/particle.png");
+
+	srand(int(time(nullptr)));
+
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
 	char preKeys[256] = {0};
@@ -24,13 +31,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// フレームの開始
 		Novice::BeginFrame();
 
-		// キー入力を受け取る
-		memcpy(gm->preKeys_, gm->keys_, 256);
-		Novice::GetHitKeyStateAll(gm->keys_);
-
 		///
 		/// ↓更新処理ここから
 		///
+
+		playscene->Update();
 
 		///
 		/// ↑更新処理ここまで
@@ -39,6 +44,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
+
+		playscene->Draw();
 
 		///
 		/// ↑描画処理ここまで

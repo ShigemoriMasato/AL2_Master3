@@ -1,10 +1,13 @@
 ﻿#include "Player.h"
+#include "Share.h"
+#include "Ground.h"
+#include "Collition.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 
 Player::Player() {
 
-	InitializeShape(0, 16, 128, 128);
+	InitializeShape(0, 16, 64, 64);
 
 	speed_ = 4.0f;
 
@@ -15,7 +18,7 @@ Player::Player() {
 }
 
 
-void Player::Update(GameManager* gm, Camera* camera) {
+void Player::Update(GameManager* gm, Camera* camera, TEmitter* landemit, Ground* ground) {
 
 	velocity_.x = 0;
 	scale_ = { 1.0f, 1.0f };
@@ -42,13 +45,20 @@ void Player::Update(GameManager* gm, Camera* camera) {
 	if (!landing_) {
 
 		velocity_.y -= 1.5f;
+		
 	}
 
-	if (pos_.y < size_.y) {
-		velocity_.y = 0;
-		pos_.y = size_.y;
-		landing_ = true;
-		sfeT = 0.0f;
+	if (velocity_.y < 0) {
+		for (int i = 0; i < ground->step_.size(); i++) {
+			if (C::BtB(*this, ground->step_[i].GetMain())) {
+				landing_ = true;
+				velocity_.y = 0;
+				pos_.y = size_.y + ground->step_[i].pos_.y + 20.0f;
+				sfeT = 0.0f;
+
+				landemit->SetIsActive(true);
+			}
+		}
 	}
 
 	if (isFExtend_) {
@@ -60,9 +70,8 @@ void Player::Update(GameManager* gm, Camera* camera) {
 
 	this->SReady(kSRT, gm->bright_, camera);
 
-	Novice::ScreenPrintf(0, 0, "%f, %f", this->pos_.x, this->pos_.y);
-	Novice::ScreenPrintf(0, 20, "%f, %f", this->LT_.x, this->LT_.y);
-	Novice::ScreenPrintf(0, 40, "%f, %f", this->RB_.x, this->RB_.y);
+	Novice::ScreenPrintf(0, 0, "%d, %f", landing_, velocity_.y);
+	Novice::ScreenPrintf(0, 20, "%f", this->pos_.y);
 }
 
 

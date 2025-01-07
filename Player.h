@@ -2,13 +2,18 @@
 #include "Object.h"
 #include "GameManager.h"
 #include "Camera.h"
+#include <vector>
+
+class TEmitter;
+class Share;
+class Ground;
 
 class Player : public Shape{
 public:
 
 	Player();
 
-	void Update(GameManager* gm, Camera* camera);
+	void Update(GameManager* gm, Camera* camera, TEmitter* landemit, Ground* ground);
 
 	void FallExtend();
 

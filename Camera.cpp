@@ -3,7 +3,7 @@
 
 Camera::Camera() {
 
-	pos_ = { 640,360 };
+	pos_ = { 1280,180 };
 	Update();
 
 }

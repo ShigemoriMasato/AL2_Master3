@@ -136,6 +136,30 @@ void Object::SetPos(Vector2 pos) {
 	this->pos_ = pos;
 }
 
+Vector2 Object::GetCorner(int type) {
+
+	switch (type) {
+	case 0:
+		return M::Transform(LT_, matrix_);
+		break;
+
+	case 1:
+		return M::Transform(RT_, matrix_);
+		break;
+
+	case 2:
+		return M::Transform(LB_, matrix_);
+		break;
+
+	case 3:
+		return M::Transform(RB_, matrix_);
+		break;
+	}
+
+	return { 0,0 };
+
+}
+
 /*************************************************************************************************
 *
 *		Shape
@@ -293,7 +317,7 @@ void Shape::Draw() {
 **************************************************************************************************/
 
 void Texture::InitializeTexture(float x, float y, float sizex, float sizey,
-	GHName GH, int maxWith, int maxHeight, int cooltime, float GHsizex, float GHsizey,
+	GHName GH, float srcx, float srcy, int cooltime, int widthNum, int heightNum,
 	unsigned int color, int bright, bool isActive, BlendMode blend, float nowx, float nowy) {
 
 	//Object部分を初期化する
@@ -301,12 +325,12 @@ void Texture::InitializeTexture(float x, float y, float sizex, float sizey,
 
 	//各値を代入する
 	this->GH_ = GH;
-	this->maxWith_ = maxWith;
-	this->maxHeight_ = maxHeight;
-	this->size_ = { GHsizex, GHsizey };
+	this->widthNum_ = widthNum;
+	this->heightNum_ = heightNum;
+	this->src_ = { srcx, srcy };
 	this->now_ = { nowx, nowy };
 	this->cooltime_ = cooltime;
-	nowCooltime_ = 0;
+	this->nowCooltime_ = 0;
 }
 
 void Texture::Draw() {
@@ -315,9 +339,9 @@ void Texture::Draw() {
 
 	Novice::DrawQuad(static_cast<int>(this->sLT_.x), static_cast<int>(this->sLT_.y), static_cast<int>(this->sRT_.x), static_cast<int>(this->sRT_.y), 
 		static_cast<int>(this->sLB_.x), static_cast<int>(this->sLB_.y), static_cast<int>(this->sRB_.x), static_cast<int>(this->sRB_.y),
-		static_cast<int>(this->now_.x * this->size_.x), static_cast<int>(this->now_.y * this->size_.y), 
-		static_cast<int>(this->size_.x * this->maxWith_), static_cast<int>(this->size_.y * this->maxHeight_), 
-		globalTexture[kTest_GH], this->color_);
+		static_cast<int>(this->now_.x * this->src_.x), static_cast<int>(this->now_.y * this->src_.y), 
+		static_cast<int>(this->src_.x * this->widthNum_), static_cast<int>(this->src_.y * this->heightNum_), 
+		globalTexture[GH_], this->color_);
 }
 
 void Texture::Animation() {
@@ -331,7 +355,7 @@ void Texture::Animation() {
 		++now_.x;
 
 		//最大になってたら0にする
-		if (now_.x >= maxWith_) {
+		if (now_.x >= widthNum_) {
 			now_.x = 0;
 		}
 	}

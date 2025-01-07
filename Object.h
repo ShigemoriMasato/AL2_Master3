@@ -52,6 +52,13 @@ public:
 	Vector2 GetPos() const;
 
 	/// <summary>
+	/// LT, RT, LB, RBを呼び出す
+	/// </summary>
+	/// <param name="type">上の順番で0~3で呼び出す</param>
+	/// <returns>指定された角　エラー時は0,0</returns>
+	Vector2 GetCorner(int type);
+
+	/// <summary>
 	/// ポジションをぶち込む
 	/// </summary>
 	void SetPos(Vector2 pos);
@@ -145,8 +152,18 @@ class Texture : public Object {
 
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="srcx">画像枚数x(1~)</param>
+	/// <param name="srcy">画像枚数y(1~)</param>
+	/// <param name="cooltime">アニメーションのクールタイム</param>
+	/// <param name="maxWidth">画像1枚の横幅</param>
+	/// <param name="maxHeight">画像1枚の縦幅</param>
+	/// <param name="nowx">今表示している画像(0~)</param>
+	/// <param name="nowy">今表示している画像(0~)</param>
 	void InitializeTexture(float x, float y, float sizex, float sizey,
-		GHName GH, int maxWith, int maxHeight, int cooltime, float GHsizex = 1, float GHsizey = 1,
+		GHName GH, float srcx, float srcy, int cooltime = 1, int widthNum = 1, int heightNum = 1,
 		unsigned int color = 0xffffffff, int bright = 0xff, bool isActive = true, BlendMode blend = kBlendModeNormal, float nowx = 0, float nowy = 0);
 
 	void Draw();
@@ -159,14 +176,14 @@ public:
 protected:
 
 	Vector2 now_;				//現在表示している画像(MapChip形式で、(0, 0)が一番左上)
-	Vector2 size_;				//画像1枚あたりのサイズ
+	Vector2 src_;				//画像1枚あたりのサイズ
 
 	GHName GH_;					//グラフィックハンドル
 
-	int maxWith_;				//画像が横に何枚あるか(1~)
-	int maxHeight_;				//画像が縦に何枚あるか(1~)
+	int widthNum_;				//画像が横に何枚あるか(1~)
+	int heightNum_;				//画像が縦に何枚あるか(1~)
 
 	int cooltime_;
 	int nowCooltime_;
-
+	
 };

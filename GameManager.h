@@ -20,5 +20,5 @@ struct GameManager {
 	
 	char keys_[256];			//キー入力
 	char preKeys_[256];		//1frame前のキー入力
-
+	
 };
