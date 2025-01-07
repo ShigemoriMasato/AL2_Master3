@@ -15,13 +15,15 @@ public:
 	/// <param name="x">カメラのワールド中心座標</param>
 	/// <param name="y">カメラのワールド中心座標</param>
 	/// <param name="ratio">カメラの拡大率</param>
-	void Update(float x = WinSizeWidth / 2, float y = WinSizeHeight / 2, float ratio = 1.0f);
+	void Update(float ratio = 1.0f);
 
 	/// <summary>
 	/// カメラの行列をもってくる
 	/// </summary>
 	/// <returns>カメラ行列</returns>
 	Matrix3x3 GetCameraMatrix();
+
+	Vector2 pos_;
 
 private:
 	/// <summary>

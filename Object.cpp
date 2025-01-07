@@ -88,7 +88,7 @@ void Object::SetColor(int bright) {
 	this->blue_ = int(roundf(this->blue_ * ratio));
 
 	//カラーに当てはめる
-	this->color_ = (this->red_ << 24) + (this->green_ << 16) + (this->blue_ << 8) + (this->red_);
+	this->color_ = (this->red_ << 24) + (this->green_ << 16) + (this->blue_ << 8) + (this->alpha_);
 }
 
 void Object::Ready(MatrixMode mode, int bright, Camera* const camera) {
@@ -229,6 +229,17 @@ void Shape::SReady(MatrixMode mode, int bright, Camera* const camera) {
 			this->matrix_ = M::Multiply(this->matrix_, M::MakeRotateMatrix(this->theta_));
 			//中心ずらす用
 			this->matrix_ = M::Multiply(this->matrix_, M::MakeTransformMatrix(this->rotatePos_.x, this->rotatePos_.y));
+
+			break;
+
+		case kScreen:
+			//SR
+			this->matrix_ = M::Multiply(M::MakeScaleMatrix(this->scale_.x, this->scale_.y), M::MakeRotateMatrix(this->theta_));
+			//T
+			this->matrix_ = M::Multiply(this->matrix_, M::MakeTransformMatrix(this->parentPos_.x, this->parentPos_.y));
+
+			//カメラの逆行列をかける
+			this->matrix_ = M::Multiply(this->matrix_, M::Inverse(camera->GetCameraMatrix()));
 
 			break;
 		}

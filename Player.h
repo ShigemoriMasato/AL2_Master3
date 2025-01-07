@@ -10,14 +10,17 @@ public:
 
 	void Update(GameManager* gm, Camera* camera);
 
-	void SideExtend();
+	void FallExtend();
+
+	void MoveExtend();
 
 private:
 
-	float sExtendT;
+	float sfeT;
+	float smeT;
 
-	bool tyakuti_;
-	bool isExtend_;
+	bool landing_;
+	bool isFExtend_;
 
 };
 

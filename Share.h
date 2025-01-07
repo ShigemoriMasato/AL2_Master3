@@ -85,6 +85,7 @@ private:
 /// </summary>
 enum TParticleMode {
 	tTest,
+	tLanding,
 
 	tMode_count				//モードの数
 };
@@ -109,6 +110,10 @@ public:
 	/// </summary>
 	void TestUpdate();
 
+	/// <summary>
+	/// Landingモードのパーティクル更新処理
+	/// </summary>
+	void LandingUpdate();
 
 
 	/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-ここにパーティクルの種類だけ関数を追加していく=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/

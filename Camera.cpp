@@ -3,6 +3,7 @@
 
 Camera::Camera() {
 
+	pos_ = { 640,360 };
 	Update();
 
 }
@@ -46,9 +47,9 @@ Matrix3x3 Camera::MakeViewportMatrix(Vector2 winSize, Vector2 LT) {
 	return ans;
 }
 
-void Camera::Update(float x, float y, float ratio) {
+void Camera::Update(float ratio) {
 	//各々のパラメータをVector2に代入
-	Vector2 pos = { x - this->winSize_.x / 2, this->world_.y - y - this->winSize_.y / 2 };
+	Vector2 pos = { pos_.x - this->winSize_.x / 2, this->world_.y - pos_.y - this->winSize_.y / 2 };
 	Vector2 LT = { -this->winSize_.x / 2, this->winSize_.y / 2 };
 	Vector2 RB = { this->winSize_.x / 2, -this->winSize_.y / 2 };
 	Vbuffer = { this->winSize_.x * ratio, this->winSize_.y * ratio };

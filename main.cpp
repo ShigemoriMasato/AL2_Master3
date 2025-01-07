@@ -1,7 +1,9 @@
 #include <Novice.h>
+#include <math.h>
 #include "Player.h"
+#include "Share.h"
 
-const char kWindowTitle[] = "学籍番号";
+const char kWindowTitle[] = "LC1A_10_シゲモリ_マサト_AnkoGaNoboruGame";
 
 int globalTexture[30];
 float buffer;
@@ -11,11 +13,7 @@ Vector2 Vbuffer;
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ライブラリの初期化
-	Novice::Initialize(kWindowTitle, 1280, 720);
-
-	Player* player = new Player();
-	GameManager* gm = new GameManager();
-	Camera* camera = new Camera();
+	Novice::Initialize(kWindowTitle, WinSizeWidth, WinSizeHeight);
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -34,8 +32,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 
-		player->Update(gm, camera);
-
 		///
 		/// ↑更新処理ここまで
 		///
@@ -43,8 +39,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
-
-		player->Draw();
 
 		///
 		/// ↑描画処理ここまで
