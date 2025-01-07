@@ -132,6 +132,18 @@ Vector2 Object::GetPos() const {
 	return this->pos_;
 }
 
+Vector2 Object::GetScale() const {
+	return this->scale_;
+}
+
+Vector2 Object::GetSize() const {
+	return this->size_;
+}
+
+Vector2 Object::GetParentPos() const {
+	return this->parentPos_;
+}
+
 void Object::SetPos(Vector2 pos) {
 	this->pos_ = pos;
 }

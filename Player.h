@@ -2,22 +2,19 @@
 #include "Object.h"
 #include "GameManager.h"
 #include "Camera.h"
+#include "Rope.h"
 
 class Player : public Shape{
 public:
 
 	Player();
 
-	void Update(GameManager* gm, Camera* camera);
-
-	void SideExtend();
+	void Update(GameManager* gm, Camera* camera, Rope* rope[2]);
 
 private:
 
-	float sExtendT;
+	float sExtendT_;
 
-	bool tyakuti_;
-	bool isExtend_;
-
+	bool death_;
 };
 

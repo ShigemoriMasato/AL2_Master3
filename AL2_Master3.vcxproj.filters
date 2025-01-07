@@ -47,6 +47,12 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="Rope.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -149,5 +155,7 @@
     <ClInclude Include="Share.h">
       <Filter>Base</Filter>
     </ClInclude>
+    <ClInclude Include="Rope.h" />
+    <ClInclude Include="PlayScene.h" />
   </ItemGroup>
 </Project>

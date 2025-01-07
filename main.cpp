@@ -1,5 +1,5 @@
 #include <Novice.h>
-#include "Player.h"
+#include "PlayScene.h"
 
 const char kWindowTitle[] = "学籍番号";
 
@@ -13,9 +13,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ライブラリの初期化
 	Novice::Initialize(kWindowTitle, 1280, 720);
 
-	Player* player = new Player();
-	GameManager* gm = new GameManager();
-	Camera* camera = new Camera();
+	PlayScene* playscene = new PlayScene();
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -27,14 +25,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Novice::BeginFrame();
 
 		// キー入力を受け取る
-		memcpy(gm->preKeys_, gm->keys_, 256);
-		Novice::GetHitKeyStateAll(gm->keys_);
+		memcpy(playscene->gm_->preKeys_, playscene->gm_->keys_, 256);
+		Novice::GetHitKeyStateAll(playscene->gm_->keys_);
 
 		///
 		/// ↓更新処理ここから
 		///
 
-		player->Update(gm, camera);
+		playscene->Update();
 
 		///
 		/// ↑更新処理ここまで
@@ -44,7 +42,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
-		player->Draw();
+		playscene->Draw();
 
 		///
 		/// ↑描画処理ここまで

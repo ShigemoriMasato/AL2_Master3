@@ -50,11 +50,24 @@ public:
 	Vector2 GetPos() const;
 
 	/// <summary>
+	/// sizeを呼び出す
+	/// </summary>
+	Vector2 GetSize() const;
+
+	/// <summary>
+	/// scaleを呼び出す
+	/// </summary>
+	Vector2 GetScale() const;
+
+	/// <summary>
+	/// 総合Posを呼び出す
+	/// </summary>
+	Vector2 GetParentPos() const;
+
+	/// <summary>
 	/// ポジションをぶち込む
 	/// </summary>
 	void SetPos(Vector2 pos);
-
-	Vector2 parentPos_;
 
 protected:
 	/// <summary>
@@ -80,6 +93,7 @@ protected:
 	Vector2 sRB_;			//右下座標
 	
 	//座標系
+	Vector2 parentPos_;		//座標の総合
 	Vector2 pos_;			//ワールド座標系のプレイヤーの中心
 	Vector2 expos_;			//調整用pos
 	Vector2 size_;			//オブジェクトの大きさ

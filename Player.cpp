@@ -1,6 +1,7 @@
-#include "Player.h"
+﻿#include "Player.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "Useful.h"
 
 Player::Player() {
 
@@ -8,77 +9,55 @@ Player::Player() {
 
 	speed_ = 4.0f;
 
-	sExtendT = 0.0f;
-
-	tyakuti_ = true;
-	isExtend_ = false;
 }
 
 
-void Player::Update(GameManager* gm, Camera* camera) {
+void Player::Update(GameManager* gm, Camera* camera, Rope* rope[2]) {
 
-	velocity_.x = 0;
+	rope[0]->isActive_ = Novice::IsPressMouse(0);
 
-	if (gm->keys_[DIK_A]) {
-		velocity_.x = -speed_;
+	if (!rope[0]->isActive_) {
+		rope[1]->isActive_ = Novice::IsPressMouse
 	}
 
-	if (gm->keys_[DIK_D]) {
-		velocity_.x = speed_;
-	}
+	for (int i = 0; i < 2; i++) {
 
-	if (gm->keys_[DIK_SPACE] && !gm->preKeys_[DIK_SPACE] && tyakuti_) {
-		velocity_.y = 5.0f;
-		tyakuti_ = false;
-		isExtend_ = true;
-		pos_.y++;
-	}
-
-	if (!tyakuti_) {
-
-		velocity_.y -= 0.3f;
-
-		if (pos_.y < size_.y) {
-			velocity_.y = 0;
-			pos_.y = size_.y;
-			tyakuti_ = true;
-		}
-	}
-
-	if (isExtend_) {
-		SideExtend();
-	}
-
-	pos_.x += velocity_.x;
-	pos_.y += velocity_.y;
-
-	this->SReady(kSRT, gm->bright_, camera);
-
-	Novice::ScreenPrintf(0, 0, "%f, %f", this->pos_.x, this->pos_.y);
-	Novice::ScreenPrintf(0, 20, "%f, %f", this->LT_.x, this->LT_.y);
-	Novice::ScreenPrintf(0, 40, "%f, %f", this->RB_.x, this->RB_.y);
-}
-
-void Player::SideExtend() {
-
-	if (!tyakuti_) {
+		//各座標を設定する
+		rope[i]->a_ = GetParentPos();
+		Vbuffer = UF::Multiply(GetScale(), GetSize());
 
 
+		if (isActive_) {
+			int X;
+			int Y;
+			Novice::GetMousePosition(&X, &Y);
+			rope[i]->b_ = { float(X), float(Y) };
 
-	}
-	else {
+			//二本より長かったら
 
-		sExtendT += 0.3f;
-
-		if (sExtendT > float(M_PI)) {
-			sExtendT = 0.0f;
-			isExtend_ = false;
 		}
 
-		expos_.y = sinf(sExtendT + float(M_PI)) * 0.3f * size_.y;
+		//midの計算
+		rope[i]->mid_.x = (rope[i]->a_.x + rope[i]->b_.x) / 2 + rope[i]->a_.y - rope[i]->b_.y;
+		rope[i]->mid_.y = (rope[i]->a_.y + rope[i]->b_.y) / 2 + rope[i]->a_.x - rope[i]->b_.x;
 
-		scale_.y = sinf(sExtendT + float(M_PI)) * 0.3f + 1.0f;
-		scale_.x = sinf(sExtendT) * 0.6f + 1.0f;
+		float t = 0;
+
+		//最初の点だけ決めておく
+		rope[i]->line_[0] = rope[i]->a_;
+
+		for (int j = 0; j < rope[i]->max_ - 1; j++) {
+
+			t = 1.0f / (rope[i]->max_ - j);
+
+			rope[i]->line_[j + 1].x = (1.0f - t) * (1.0f - t) * rope[i]->a_.x + 2 * t * (1.0f - t) * rope[i]->mid_.x + t * t * rope[i]->b_.x;
+			rope[i]->line_[j + 1].y = (1.0f - t) * (1.0f - t) * rope[i]->a_.y + 2 * t * (1.0f - t) * rope[i]->mid_.y + t * t * rope[i]->b_.y;
+
+			rope[i]->line_[j + 1] = M::Transform(rope[i]->line_[j + 1], camera->GetCameraMatrix());
+
+		}
 	}
+	
+	Ready(kSRT, gm->bright_, camera);
 
 }
