@@ -19,6 +19,8 @@ public:
 
 	void MoveExtend();
 
+	void SetIsAlive(bool isAlive);
+
 private:
 
 	float sfeT;
