@@ -63,6 +63,21 @@ public:
 	/// </summary>
 	void SetPos(Vector2 pos);
 
+	/// <summary>
+	/// 色を変更する
+	/// </summary>
+	void SetColor(unsigned int color);
+
+	/// <summary>
+	/// 拡大率を現在の拡大率にかける
+	/// </summary>
+	void MultiplyScale(float x, float y);
+
+	/// <summary>
+	/// thetaをぶち込む
+	/// </summary>
+	void SetTheta(float theta);
+
 
 protected:
 	/// <summary>
@@ -72,9 +87,9 @@ protected:
 		unsigned int color = 0xffffffff, int bright = 0xff, bool isActive = true, BlendMode blend = kBlendModeNormal);
 
 	/// <summary>
-	/// 色を設定する
+	/// 色を描画用に調整する
 	/// </summary>
-	void SetColor(int bright);
+	void AdjustColor(int bright);
 
 	//- - - - - - ローカル座標 - - - - - - -//
 	Vector2 LT_;				//左上座標
@@ -91,6 +106,7 @@ protected:
 	Vector2 parentPos_;
 	Vector2 pos_;				//ワールド座標系のプレイヤーの中心
 	Vector2 expos1_;			//調整用pos
+	Vector2 expos2_;
 	Vector2 size_;				//オブジェクトの大きさ
 	Vector2 scale_;				//プレイヤーの大きさの倍率
 	Vector2 rotatePos_;			//kSTR行列の中心

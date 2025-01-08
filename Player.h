@@ -8,7 +8,7 @@ class TEmitter;
 class Share;
 class Ground;
 
-class Player : public Shape{
+class Player : public Shape {
 public:
 
 	Player();

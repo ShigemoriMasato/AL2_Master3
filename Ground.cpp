@@ -33,7 +33,7 @@ void Step::Initialize(int num) {
 	pos_ = { 0, float(num) * INTERVAL - 20.0f };
 
 	main.InitializeShape(pos_.x, pos_.y, 1280, 40);
-	face.InitializeShape(pos_.x, pos_.y + 15.0f, 1280, 10, -1, 1, 1, 1, -1, -1, 1, -1, kQuad, kFillModeSolid, 0x555555ff);
+	face.InitializeShape(pos_.x, pos_.y + 15.0f, 1280, 10, -1, 1, 1, 1, -1, -1, 1, -1, kQuad, kFillModeSolid, 0x999999ff);
 
 }
 
