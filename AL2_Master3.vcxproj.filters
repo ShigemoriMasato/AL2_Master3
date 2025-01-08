@@ -35,9 +35,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>KamataEngine</Filter>
-    </ClCompile>
     <ClCompile Include="Share.cpp">
       <Filter>Base</Filter>
     </ClCompile>
@@ -45,6 +42,12 @@
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Collition.cpp">
       <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>
@@ -142,11 +145,14 @@
     <ClInclude Include="Camera.h">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h" />
     <ClInclude Include="GameManager.h">
       <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="Share.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="Collition.h">
       <Filter>Base</Filter>
     </ClInclude>
   </ItemGroup>

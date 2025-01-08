@@ -2,8 +2,6 @@
 #include "Camera.h"
 #include "GameManager.h"
 #include "Share.h"
-#include "Player.h"
-#include "Ground.h"
 
 class PlayScene {
 public:
@@ -19,7 +17,6 @@ public:
 	/// </summary>
 	void Draw();
 
-	Player* GetPlayer();
 	Camera* GetCamera();
 	GameManager* GetGameManager();
 
@@ -28,13 +25,13 @@ private:
 	Shape* background_;
 
 	//使用するObject
-	Player* player_;
+
 
 	//ゲーム設定
 	GameManager* gm_;
 	Camera* camera_;
 	Share* share_;
-	Ground* ground_;
+
 
 	//Emitter
 	std::vector<SEmitter> sEmitter_;

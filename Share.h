@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include <vector>
 #include "Object.h"
-#include "Player.h"
 
 class PlayScene;
 
@@ -92,7 +91,6 @@ private:
 /// </summary>
 enum TParticleMode {
 	tTest,
-	tLanding,
 
 	tMode_count				//モードの数
 };
@@ -115,11 +113,6 @@ public:
 	/// Testモードのパーティクル更新処理
 	/// </summary>
 	void TestUpdate();
-
-	/// <summary>
-	/// Landingモードのパーティクル更新処理
-	/// </summary>
-	void LandingUpdate(Player* player, Camera* camera, GameManager* gm);
 
 
 	/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-ここにパーティクルの種類だけ関数を追加していく=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
