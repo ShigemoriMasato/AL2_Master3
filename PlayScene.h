@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "Ground.h"
 
+class Enemy;
+
 class PlayScene {
 public:
 
@@ -19,6 +21,11 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// エネミーの全体処理
+	/// </summary>
+	void EnemysUpdate();
+
 	Player* GetPlayer();
 	Camera* GetCamera();
 	GameManager* GetGameManager();
@@ -29,6 +36,7 @@ private:
 
 	//使用するObject
 	Player* player_;
+	std::vector<Enemy> enemys_;
 
 	//ゲーム設定
 	GameManager* gm_;

@@ -26,6 +26,9 @@ private:
 	float sfeT;
 	float smeT;
 
+	int level_;				//プレイヤーの現在位置を床のインターバルで割った量
+	int displayLevel_;		//着地したときに更新される、表示用の階層
+
 	bool landing_;
 	bool isFExtend_;
 

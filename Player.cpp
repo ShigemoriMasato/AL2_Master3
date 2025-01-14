@@ -108,6 +108,11 @@ void Player::MoveExtend() {
 
 }
 
+void Player::SetIsAlive(bool isAlive)
+{
+	this->isActive_ = isAlive;
+}
+
 void Player::FallExtend() {
 
 	if (!landing_) {

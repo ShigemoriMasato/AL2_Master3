@@ -1,4 +1,4 @@
-#define _USE_MATH_DEFINES
+ï»¿#define _USE_MATH_DEFINES
 #include <math.h>
 #include "Enemy.h"
 #include "PlayScene.h"
@@ -20,11 +20,11 @@ void Enemy::Initialize(EnemyType type, float speed, float directionx, float dire
 
 void Enemy::BulletUpdate(Player* player, GameManager* gm, Camera* camera) {
 
-	//‚½‚¾‚Ì’¼i
+	//ãŸã ã®ç›´é€²
 	pos_.x += direction_.x * speed_;
 	pos_.y += direction_.y * speed_;
 
-	//‰æ–ÊŠO‘Þê
+	//ç”»é¢å¤–é€€å ´
 	if (pos_.x > 2560 + player->GetPos().x || pos_.x < -1280 || pos_.y > 1440 + player->GetPos().y || pos_.y < -720 + player->GetPos().y) {
 		isActive_ = false;
 	}
@@ -34,7 +34,7 @@ void Enemy::BulletUpdate(Player* player, GameManager* gm, Camera* camera) {
 }
 
 void Enemy::RevolutionUpdate(Player* player, GameManager* gm, Camera* camera) {
-
+	player;
 	if (initialize_) {
 		rotatePos_ = pos_;
 		theta_ = float(rand() % 100000) / 10000;
@@ -44,7 +44,7 @@ void Enemy::RevolutionUpdate(Player* player, GameManager* gm, Camera* camera) {
 
 	theta_ += 0.1f;
 
-
+	SReady(kSRT, gm->bright_, camera);
 
 }
 
@@ -53,7 +53,7 @@ void Enemy::AllUpdate(GameManager* gm, Camera* camera, PlayScene* ps) {
 	switch (type_) {
 
 	case kBullet:
-		BulletUpdate(ps->GetPlayer(), ps->GetGameManager(), ps->GetCamera());
+		BulletUpdate(ps->GetPlayer(), gm, camera);
 		break;
 
 	case kRevolution:
@@ -61,11 +61,5 @@ void Enemy::AllUpdate(GameManager* gm, Camera* camera, PlayScene* ps) {
 		break;
 
 	}
-
-}
-
-void Enemy::Draw() {
-
-	this->Draw();
 
 }

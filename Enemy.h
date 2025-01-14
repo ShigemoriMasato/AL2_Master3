@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Object.h"
 #include "GameManager.h"
 #include "Camera.h"
@@ -8,7 +8,7 @@ class PlayScene;
 
 enum EnemyType {
 	kBullet,
-	kRevolution,		//Œö“]
+	kRevolution,		//å…¬è»¢
 
 };
 
@@ -25,8 +25,6 @@ public:
 	void BulletUpdate(Player* player, GameManager* gm, Camera* camera);
 
 	void RevolutionUpdate(Player* player, GameManager* gm, Camera* camera);
-
-	void Draw();
 
 private:
 
