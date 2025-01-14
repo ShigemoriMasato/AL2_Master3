@@ -77,7 +77,7 @@ void Object::InitializeObj(float x, float y, float sizex, float sizey, unsigned 
 	this->isActive_ = isActive;
 }
 
-void Object::SetColor(int bright) {
+void Object::AdjustColor(int bright) {
 	//明るさの割合を求める
 	float ratio = float(this->bright_) / 255;		//オブジェクト固有の明るさ
 	ratio *= float(bright) / 255;					//ワールド全体の明るさ
@@ -93,7 +93,7 @@ void Object::SetColor(int bright) {
 
 void Object::Ready(MatrixMode mode, int bright, Camera* const camera) {
 	//色の設定
-	this->SetColor(bright);
+	this->AdjustColor(bright);
 
 	//行列の作成
 	switch (mode) {
@@ -160,6 +160,28 @@ Vector2 Object::GetCorner(int type) {
 
 }
 
+void Object::MultiplyScale(float x, float y) {
+	this->scale_.x *= x;
+	this->scale_.y *= y;
+}
+
+void Object::SetTheta(float theta) {
+	this->theta_ = theta;
+}
+
+void Object::SetColor(unsigned int color) {
+	this->red_ = color / 0x1000000;
+	color -= this->red_ * 0x1000000;
+
+	this->green_ = color / 0x10000;
+	color -= this->green_ * 0x10000;
+
+	this->blue_ = color / 0x100;
+	color -= this->blue_ * 0x100;
+
+	this->alpha_ = color;
+}
+
 /*************************************************************************************************
 *
 *		Shape
@@ -206,10 +228,10 @@ void Shape::SReady(MatrixMode mode, int bright, Camera* const camera) {
 	this->LB_ = UF::Multiply(this->baseLB_, this->infLB_);
 	this->RB_ = UF::Multiply(this->baseRB_, this->infRB_);
 
-	parentPos_ = { pos_.x + expos1_.x, pos_.y + expos1_.y };
+	parentPos_ = { pos_.x + expos1_.x + expos2_.x, pos_.y + expos1_.y + expos2_.y };
 
 	//色の設定
-	this->SetColor(bright);
+	this->AdjustColor(bright);
 
 	//======================
 	//行列の作成

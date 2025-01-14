@@ -54,7 +54,7 @@ Vector2 M::Transform(Vector2 vector, Matrix3x3 matrix) {
 
 Matrix3x3 M::MakeRotateMatrix(float theta) {
 
-	return {
+	Matrix3x3 ans = {
 		{
 			{cosf(theta), sinf(theta), 0},
 			{-sinf(theta), cosf(theta), 0},
@@ -62,6 +62,7 @@ Matrix3x3 M::MakeRotateMatrix(float theta) {
 		}
 	};
 
+	return ans;
 }
 
 Matrix3x3 M::MakeTransformMatrix(float x, float y) {

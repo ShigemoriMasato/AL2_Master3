@@ -7,11 +7,16 @@
 
 Player::Player() {
 
-	InitializeShape(0, 16, 64, 64);
+	InitializeShape(0, 32, 64, 64);
 
 	speed_ = 4.0f;
 
 	sfeT = 0.0f;
+	smeT = 0.0f;
+	velocity_.y = -0.01f;
+
+	expos1_ = { 0 };
+	expos2_ = { 0 };
 
 	landing_ = true;
 	isFExtend_ = false;
@@ -25,10 +30,20 @@ void Player::Update(GameManager* gm, Camera* camera, TEmitter* landemit, Ground*
 
 	if (gm->keys_[DIK_A]) {
 		velocity_.x = -speed_;
+
+		if (!gm->preKeys_[DIK_D] && !gm->preKeys_[DIK_A]) {
+			smeT = 0.0f;
+		}
+
 	}
 
 	if (gm->keys_[DIK_D]) {
 		velocity_.x = speed_;
+
+		if (!gm->preKeys_[DIK_D] && !gm->preKeys_[DIK_A]) {
+			smeT = 0.0f;
+		}
+
 	}
 
 	if (velocity_.x != 0) {
@@ -48,7 +63,7 @@ void Player::Update(GameManager* gm, Camera* camera, TEmitter* landemit, Ground*
 		
 	}
 
-	if (velocity_.y < 0) {
+	if (velocity_.y < 0 && !landing_) {
 		for (int i = 0; i < ground->step_.size(); i++) {
 			if (C::BtB(*this, ground->step_[i].GetMain())) {
 				landing_ = true;
@@ -57,6 +72,8 @@ void Player::Update(GameManager* gm, Camera* camera, TEmitter* landemit, Ground*
 				sfeT = 0.0f;
 
 				landemit->SetIsActive(true);
+			} else {
+				Vbuffer = this->GetCorner(0);
 			}
 		}
 	}
@@ -85,10 +102,15 @@ void Player::MoveExtend() {
 		smeT -= float(M_PI);
 	}
 
-	expos1_.y = sinf(smeT) * 0.15f * size_.y;
+	expos2_.y = -sinf(smeT) * 0.15f * size_.y;
 
 	scale_.y *= 1.0f - sinf(smeT) * 0.15f;
 
+}
+
+void Player::SetIsAlive(bool isAlive)
+{
+	this->isActive_ = isAlive;
 }
 
 void Player::FallExtend() {
@@ -126,3 +148,4 @@ void Player::FallExtend() {
 	}
 
 }
+

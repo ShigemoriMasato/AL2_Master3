@@ -1,4 +1,5 @@
 ﻿#include "PlayScene.h"
+#include "Enemy.h"
 
 //初期化(PlaySceneに含まれるすべてのコンストラクタを実行する)
 PlayScene::PlayScene() {
@@ -59,6 +60,9 @@ void PlayScene::Update() {
 
 	camera_->Update();
 
+	/*******************Enemy*******************/
+	EnemysUpdate();
+
 	/*******************Step*******************/
 	ground_->Update(camera_, gm_, player_);
 
@@ -95,6 +99,19 @@ void PlayScene::Draw() {
 	share_->Draw();
 
 }
+
+void PlayScene::EnemysUpdate()
+{
+	//発生処理
+
+
+	for (int i = 0; i < enemys_.size(); i++) {
+		enemys_[i].AllUpdate(gm_, camera_, this);
+	}
+}
+
+
+
 
 Player* PlayScene::GetPlayer() {
 	return player_;
