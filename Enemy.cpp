@@ -25,7 +25,7 @@ void Enemy::BulletUpdate(Player* player, GameManager* gm, Camera* camera) {
 	pos_.y += direction_.y * speed_;
 
 	//画面外退場
-	if (pos_.x > 2560 + player->GetPos().x || pos_.x < -1280 || pos_.y > 1440 + player->GetPos().y || pos_.y < -720 + player->GetPos().y) {
+	if (pos_.x > 2560 || pos_.x < -1280 || pos_.y > 1440 + player->GetPos().y || pos_.y < -360 + player->GetPos().y) {
 		isActive_ = false;
 	}
 

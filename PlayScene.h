@@ -43,6 +43,7 @@ private:
 	Camera* camera_;
 	Share* share_;
 	Ground* ground_;
+	float cT;
 
 	//Emitter
 	std::vector<SEmitter> sEmitter_;

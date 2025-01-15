@@ -1,4 +1,6 @@
-﻿#include "PlayScene.h"
+﻿#define _USE_MATH_DEFINES
+#include <math.h>
+#include "PlayScene.h"
 #include "Enemy.h"
 
 //初期化(PlaySceneに含まれるすべてのコンストラクタを実行する)
@@ -10,6 +12,8 @@ PlayScene::PlayScene() {
 	share_ = new Share();
 	camera_ = new Camera();
 	ground_ = new Ground();
+
+	cT = float(M_PI);
 
 	sEmitter_.clear();
 	tEmitter_.clear();
@@ -58,24 +62,46 @@ void PlayScene::Update() {
 	player_->Update(gm_, camera_, landing, ground_);
 	
 	/*******************Camera*******************/
-	camera_->pos_.y = player_->GetPos().y + 120;
-	if (camera_->pos_.y < 340) {
-		camera_->pos_.y = 340;
+	camera_->pos_.y = player_->GetPos().y - 240.0f;
+	if (camera_->pos_.y < -40) {
+		camera_->pos_.y = -40;
 	}
 
 	if (gm_->keys_[DIK_LSHIFT]) {
-		if (gm_->cRatio_ > 0.5f) {
-			gm_->cRatio_ -= 0.025f;
+		
+		if (cT > 0) {
+			cT -= 0.1f;
 		} else {
-			gm_->cRatio_ = 0.5f;
+			cT = 0.0f;
 		}
+
+		Fbuffer = -1.0f;
+
 	} else {
-		if (gm_->cRatio_ < 1.0f) {
-			gm_->cRatio_ += 0.025f;
+
+		if (cT < float(M_PI)) {
+			cT += 0.1f;
 		} else {
-			gm_->cRatio_ = 1.0f;
+			cT = float(M_PI);
 		}
+
+		Fbuffer = 1.0f;
+
 	}
+
+	Fbuffer *= sinf(cT) * 0.03f;
+
+	gm_->cRatio_ += Fbuffer;
+
+	if (gm_->cRatio_ > 1.0f) {
+		gm_->cRatio_ = 1.0f;
+	}
+
+	if (gm_->cRatio_ < 0.4f) {
+		gm_->cRatio_ = 0.4f;
+	}
+
+	camera_->pos_.y += 1280.0f * (1.0f - gm_->cRatio_);
 
 	camera_->Update(gm_->cRatio_);
 
@@ -128,9 +154,9 @@ void PlayScene::EnemysUpdate()
 	//発生処理
 	gm_->enemyFrame_++;
 
-	Fbuffer = 60.0f - float(player_->GetLevel());
-	if (Fbuffer < 1) {
-		Fbuffer = 1;
+	Fbuffer = 60.0f - float(player_->GetLevel() / 2);
+	if (Fbuffer < 10) {
+		Fbuffer = 10;
 	}
 
 	if(gm_->enemyFrame_ > Fbuffer) {
@@ -148,6 +174,12 @@ void PlayScene::EnemysUpdate()
 		enemys_.push_back(enemy);
 
 		gm_->enemyFrame_ = 0;
+
+		Ibuffer++;
+	}
+
+	if (Ibuffer > 2) {
+
 	}
 
 	for (int i = 0; i < enemys_.size(); i++) {

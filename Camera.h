@@ -23,16 +23,10 @@ public:
 	/// <returns>カメラ行列</returns>
 	Matrix3x3 GetCameraMatrix();
 
-	Vector2 pos_;
+	Vector2 pos_;		//カメラの座標
 
 private:
-	/// <summary>
-	/// カメラの座標から行列を作る
-	/// </summary>
-	/// <param name="pos"></param>
-	/// <returns></returns>
-	Matrix3x3 MakeCameraMatrix(Vector2 pos);
-
+	
 	/// <summary>
 	///	 正規化した状態の行列を作る
 	/// </summary>

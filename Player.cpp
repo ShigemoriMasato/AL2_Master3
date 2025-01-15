@@ -7,7 +7,7 @@
 
 Player::Player() {
 
-	InitializeShape(0, 32, 48, 48);
+	InitializeShape(0, 24, 48, 48);
 	collition_.InitializeShape(0, 16, 48, 24);
 	collition_.SetColor(0x555555ff);
 
@@ -15,7 +15,6 @@ Player::Player() {
 
 	sfeT = 0.0f;
 	smeT = 0.0f;
-	velocity_.y = -0.01f;
 
 	expos1_ = { 0 };
 	expos2_ = { 0 };
