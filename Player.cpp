@@ -7,7 +7,9 @@
 
 Player::Player() {
 
-	InitializeShape(0, 32, 64, 64);
+	InitializeShape(0, 32, 48, 48);
+	collition_.InitializeShape(0, 16, 48, 24);
+	collition_.SetColor(0x555555ff);
 
 	speed_ = 4.0f;
 
@@ -17,6 +19,7 @@ Player::Player() {
 
 	expos1_ = { 0 };
 	expos2_ = { 0 };
+	level_ = 0;
 
 	landing_ = true;
 	isFExtend_ = false;
@@ -65,8 +68,9 @@ void Player::Update(GameManager* gm, Camera* camera, TEmitter* landemit, Ground*
 
 	if (velocity_.y < 0 && !landing_) {
 		for (int i = 0; i < ground->step_.size(); i++) {
-			if (C::BtB(*this, ground->step_[i].GetMain())) {
+			if (CL::BtB(&collition_, &ground->step_[i].GetMain())) {
 				landing_ = true;
+				level_++;
 				velocity_.y = 0;
 				pos_.y = size_.y + ground->step_[i].pos_.y + 20.0f;
 				sfeT = 0.0f;
@@ -85,10 +89,19 @@ void Player::Update(GameManager* gm, Camera* camera, TEmitter* landemit, Ground*
 	pos_.x += velocity_.x;
 	pos_.y += velocity_.y;
 
-	this->SReady(kSRT, gm->bright_, camera);
+	if (pos_.x < -640.0f + 32) {
+		pos_.x = -640.0f + 32;
+	}
 
-	Novice::ScreenPrintf(0, 0, "%d, %f", landing_, velocity_.y);
-	Novice::ScreenPrintf(0, 20, "%f", this->pos_.y);
+	if (pos_.x > 640.0f - 32) {
+		pos_.x = 640.0f - 32;
+	}
+
+	collition_.SetPos({ pos_.x, pos_.y - 12.0f });
+	collition_.SetScale(scale_);
+
+	this->SReady(kSRT, gm->bright_, camera);
+	(&collition_)->SReady(kSRT, gm->bright_, camera);
 }
 
 
@@ -106,6 +119,14 @@ void Player::MoveExtend() {
 
 	scale_.y *= 1.0f - sinf(smeT) * 0.15f;
 
+}
+
+Shape Player::GetCollition() const {
+    return Shape(collition_);
+}
+
+int Player::GetLevel() const {
+	return this->level_;
 }
 
 void Player::SetIsAlive(bool isAlive)

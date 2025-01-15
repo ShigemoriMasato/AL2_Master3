@@ -10,6 +10,7 @@ class PlayScene;
 /// </summary>
 enum SParticleMode {
 	sTest,
+	sJump,
 
 	sMode_count				//モードの数
 };
@@ -31,7 +32,10 @@ public:
 	/// </summary>
 	void TestUpdate();
 
-
+	/// <summary>
+	/// Jumpモードのパーティクル更新処理
+	/// </summary>
+	void JumpUpdate(Player* player);
 
 	/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-ここにパーティクルの種類だけ関数を追加していく=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 

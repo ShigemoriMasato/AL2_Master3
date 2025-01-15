@@ -22,7 +22,8 @@ enum DrawMode {
 
 };
 
-extern float buffer;
+extern float Fbuffer;
+extern int Ibuffer;
 extern Vector2 Vbuffer;
 extern int globalTexture[30];
 
@@ -37,16 +38,6 @@ public:
 	/******************アクセサーメソッド**********************/
 
 	/// <summary>
-	/// posxを呼び出す
-	/// </summary>
-	float GetPosX() const;
-
-	/// <summary>
-	/// posyを呼び出す
-	/// </summary>
-	float GetPosY() const;
-
-	/// <summary>
 	/// posを呼び出す
 	/// </summary>
 	Vector2 GetPos() const;
@@ -57,6 +48,12 @@ public:
 	/// <param name="type">上の順番で0~3で呼び出す</param>
 	/// <returns>指定された角　エラー時は0,0</returns>
 	Vector2 GetCorner(int type);
+
+	/// <summary>
+	/// Velocityを呼び出す
+	/// </summary>
+	/// <returns></returns>
+	Vector2 GetVelocity();
 
 	/// <summary>
 	/// ポジションをぶち込む
@@ -72,6 +69,11 @@ public:
 	/// 拡大率を現在の拡大率にかける
 	/// </summary>
 	void MultiplyScale(float x, float y);
+
+	/// <summary>
+	/// scaleを設定する
+	/// </summary>
+	void SetScale(Vector2 scale);
 
 	/// <summary>
 	/// thetaをぶち込む
@@ -92,40 +94,45 @@ protected:
 	void AdjustColor(int bright);
 
 	//- - - - - - ローカル座標 - - - - - - -//
-	Vector2 LT_;				//左上座標
-	Vector2 RT_;				//右上座標
-	Vector2 LB_;				//左下座標
-	Vector2 RB_;				//右下座標
+	Vector2 LT_{};				//左上座標
+	Vector2 RT_{};				//右上座標
+	Vector2 LB_{};				//左下座標
+	Vector2 RB_{};				//右下座標
 	//- - - - - - スクリーン座標 - - - - - - -//
-	Vector2 sLT_;				//左上座標
-	Vector2 sRT_;				//右上座標
-	Vector2 sLB_;				//左下座標
-	Vector2 sRB_;				//右下座標
+	Vector2 sLT_{};				//左上座標
+	Vector2 sRT_{};				//右上座標
+	Vector2 sLB_{};				//左下座標
+	Vector2 sRB_{};				//右下座標
 	
 	//座標系
-	Vector2 parentPos_;
-	Vector2 pos_;				//ワールド座標系のプレイヤーの中心
-	Vector2 expos1_;			//調整用pos
-	Vector2 expos2_;
-	Vector2 size_;				//オブジェクトの大きさ
-	Vector2 scale_;				//プレイヤーの大きさの倍率
-	Vector2 rotatePos_;			//kSTR行列の中心
-	Vector2 velocity_;			//速度
-	Vector2 direction_;			//向いている方向
-	float speed_;				//速さ
-	float theta_;				//回転角度(radian)
-	Matrix3x3 matrix_;			//あらゆるパラメータをもとに作成する行列
+	Vector2 parentPos_{};
+	Vector2 pos_{};				//ワールド座標系のプレイヤーの中心
+	Vector2 expos1_{};			//調整用pos
+	Vector2 expos2_{};			//調整用pos
+	Vector2 startPos_{};		//初期座標
+	Vector2 endPos_{};			//終了座標
+	Vector2 size_{};			//オブジェクトの大きさ
+	Vector2 scale_{};			//プレイヤーの大きさの倍率
+	Vector2 rotatePos_{};		//kSTR行列の中心
+	Vector2 velocity_{};		//速度
+	Vector2 direction_{};		//向いている方向
+	float speed_{};				//速さ
+	float theta_{};				//回転角度(radian)
+	float t_{};					//アニメーション用
+	Matrix3x3 matrix_{};		//あらゆるパラメータをもとに作成する行列
+
+	int frame_{};					//アニメーション用
 
 	//色関係
-	int red_;					//赤(0 ~ 255)
-	int green_;					//緑(0 ~ 255)
-	int blue_;					//青(0 ~ 255)
-	int alpha_;					//透明度(0 ~ 255)
-	int bright_;				//明るさ(0 ~ 255)
-	unsigned int color_;		//計算後の色
+	int red_{};					//赤(0 ~ 255)
+	int green_{};				//緑(0 ~ 255)
+	int blue_{};				//青(0 ~ 255)
+	int alpha_{};				//透明度(0 ~ 255)
+	int bright_{};				//明るさ(0 ~ 255)
+	unsigned int color_{};		//計算後の色
 
 	//フラグ系
-	bool isActive_;
+	bool isActive_{};
 
 	BlendMode blendMode_ = kBlendModeNormal;	//ブレンドモード
 };

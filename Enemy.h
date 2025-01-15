@@ -12,7 +12,7 @@ enum EnemyType {
 
 };
 
-class Enemy : Shape {
+class Enemy : public Shape {
 public:
 
 	void Initialize(EnemyType type, float speed, float directionx, float directiony, float x, float y, float sizex, float sizey,

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Object.h"
 #include "GameManager.h"
 #include "Camera.h"
@@ -19,15 +19,19 @@ public:
 
 	void MoveExtend();
 
+	Shape GetCollition() const;
+	int GetLevel() const;
+
 	void SetIsAlive(bool isAlive);
 
 private:
 
+	Shape collition_;
+
 	float sfeT;
 	float smeT;
 
-	int level_;				//ƒvƒŒƒCƒ„[‚ÌŒ»İˆÊ’u‚ğ°‚ÌƒCƒ“ƒ^[ƒoƒ‹‚ÅŠ„‚Á‚½—Ê
-	int displayLevel_;		//’…’n‚µ‚½‚Æ‚«‚ÉXV‚³‚ê‚éA•\¦—p‚ÌŠK‘w
+	int level_;		//ç€åœ°ã—ãŸã¨ãã«æ›´æ–°ã•ã‚Œã‚‹ã€è¡¨ç¤ºç”¨ã®éšå±¤
 
 	bool landing_;
 	bool isFExtend_;

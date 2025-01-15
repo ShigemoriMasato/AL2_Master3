@@ -49,14 +49,14 @@ Matrix3x3 Camera::MakeViewportMatrix(Vector2 winSize, Vector2 LT) {
 
 void Camera::Update(float ratio) {
 	//各々のパラメータをVector2に代入
-	Vector2 pos = { pos_.x - this->winSize_.x / 2, this->world_.y - pos_.y - this->winSize_.y / 2 };
+	Vector2 pos = { (pos_.x - this->winSize_.x / 2) / ratio, this->world_.y - pos_.y - this->winSize_.y / 2 };
 	Vector2 LT = { -this->winSize_.x / 2, this->winSize_.y / 2 };
 	Vector2 RB = { this->winSize_.x / 2, -this->winSize_.y / 2 };
 	Vbuffer = { this->winSize_.x * ratio, this->winSize_.y * ratio };
 
 	//カメラのマトリックスを作成
 	this->matrix_ = M::Multiply(M::Multiply(MakeCameraMatrix(pos), MakeOrthographicProjectionMatirx(LT, RB)), MakeViewportMatrix(Vbuffer, LT));
-
+	Novice::ScreenPrintf(0, 100, "CameraPos:%f,%f", pos.x, pos.y);
 }
 
 Matrix3x3 Camera::GetCameraMatrix() {

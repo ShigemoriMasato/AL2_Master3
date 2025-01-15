@@ -23,9 +23,9 @@ namespace {
 	/// </summary>
 	/// <returns></returns>
 	float SearchLength(float x, float y, float buff) {
-		buffer = x * x + y * y;
-		if (buff < buffer) {
-			return buffer;
+		Fbuffer = x * x + y * y;
+		if (buff < Fbuffer) {
+			return Fbuffer;
 		} else {
 			return buff;
 		}
@@ -51,6 +51,7 @@ void Object::InitializeObj(float x, float y, float sizex, float sizey, unsigned 
 	/**********************座標関係****************************/
 	this->pos_ = { x, y };
 	this->expos1_ = { 0 };
+	this->expos2_ = { 0 };
 	this->scale_ = { 1.0f, 1.0f };
 	this->theta_ = 0.0f;
 	this->speed_ = 0;
@@ -120,16 +121,12 @@ void Object::Ready(MatrixMode mode, int bright, Camera* const camera) {
 //	アクセサーメソッド
 //================================
 
-float Object::GetPosX() const {
-	return this->pos_.x;
-}
-
-float Object::GetPosY() const {
-	return this->pos_.y;
-}
-
 Vector2 Object::GetPos() const {
 	return this->pos_;
+}
+
+Vector2 Object::GetVelocity() {
+	return this->velocity_;
 }
 
 void Object::SetPos(Vector2 pos) {
@@ -163,6 +160,11 @@ Vector2 Object::GetCorner(int type) {
 void Object::MultiplyScale(float x, float y) {
 	this->scale_.x *= x;
 	this->scale_.y *= y;
+}
+
+void Object::SetScale(Vector2 scale)
+{
+	this->scale_ = scale;
 }
 
 void Object::SetTheta(float theta) {

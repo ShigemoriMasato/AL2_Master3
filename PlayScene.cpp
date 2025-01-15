@@ -19,6 +19,11 @@ PlayScene::PlayScene() {
 	testEmitter.Initialize(sTest, 1, 30, false, 0, 0, 60, 60);
 	sEmitter_.push_back(testEmitter);
 
+	//ジャンプの煙
+	SEmitter jumpEmitter;
+	jumpEmitter.Initialize(sJump, 1, 3, true, 0, 0, 30, 30, -1, 1, 1, 1, -1, -1, 1, -1, kQuad, kFillModeSolid, 0xaaaaaaff, 255, true, kBlendModeAdd);
+	sEmitter_.push_back(jumpEmitter);
+
 	TEmitter testingEmitter;
 	testingEmitter.Initialize(tTest, 1, 30, false, 0, 0, 60, 60, kTest_GH, 1, 1);
 	tEmitter_.push_back(testingEmitter);
@@ -53,12 +58,26 @@ void PlayScene::Update() {
 	player_->Update(gm_, camera_, landing, ground_);
 	
 	/*******************Camera*******************/
-	camera_->pos_.y = player_->GetPosY() + 120;
+	camera_->pos_.y = player_->GetPos().y + 120;
 	if (camera_->pos_.y < 340) {
 		camera_->pos_.y = 340;
 	}
 
-	camera_->Update();
+	if (gm_->keys_[DIK_LSHIFT]) {
+		if (gm_->cRatio_ > 0.5f) {
+			gm_->cRatio_ -= 0.025f;
+		} else {
+			gm_->cRatio_ = 0.5f;
+		}
+	} else {
+		if (gm_->cRatio_ < 1.0f) {
+			gm_->cRatio_ += 0.025f;
+		} else {
+			gm_->cRatio_ = 1.0f;
+		}
+	}
+
+	camera_->Update(gm_->cRatio_);
 
 	/*******************Enemy*******************/
 	EnemysUpdate();
@@ -92,6 +111,10 @@ void PlayScene::Draw() {
 	//背景
 	background_->Draw();
 
+	for(int i = 0; i < enemys_.size(); i++) {
+		enemys_[i].Draw();
+	}
+
 	player_->Draw();
 
 	ground_->Draw();
@@ -103,7 +126,29 @@ void PlayScene::Draw() {
 void PlayScene::EnemysUpdate()
 {
 	//発生処理
+	gm_->enemyFrame_++;
 
+	Fbuffer = 60.0f - float(player_->GetLevel());
+	if (Fbuffer < 1) {
+		Fbuffer = 1;
+	}
+
+	if(gm_->enemyFrame_ > Fbuffer) {
+
+
+		Enemy enemy;
+		enemy.Initialize(kBullet, 3, 0, -1, 0, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kEllipse, kFillModeSolid, 0xaa5555ff);
+		enemy.SReady(kSRT, gm_->bright_, camera_);
+		enemys_.push_back(enemy);
+		enemy.Initialize(kBullet, 3, 0, -1, -320, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kEllipse, kFillModeSolid, 0xaa5555ff);
+		enemy.SReady(kSRT, gm_->bright_, camera_);
+		enemys_.push_back(enemy);
+		enemy.Initialize(kBullet, 3, 0, -1, 320, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kEllipse, kFillModeSolid, 0xaa5555ff);
+		enemy.SReady(kSRT, gm_->bright_, camera_);
+		enemys_.push_back(enemy);
+
+		gm_->enemyFrame_ = 0;
+	}
 
 	for (int i = 0; i < enemys_.size(); i++) {
 		enemys_[i].AllUpdate(gm_, camera_, this);

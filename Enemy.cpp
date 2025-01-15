@@ -29,6 +29,10 @@ void Enemy::BulletUpdate(Player* player, GameManager* gm, Camera* camera) {
 		isActive_ = false;
 	}
 
+	if(CL::BtB(player, this)) {
+		player->SetIsAlive(false);
+	}
+
 	SReady(kSRT, gm->bright_, camera);
 
 }

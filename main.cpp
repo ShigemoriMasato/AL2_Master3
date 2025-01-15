@@ -6,7 +6,8 @@
 const char kWindowTitle[] = "LC1A_10_シゲモリ_マサト_AnkoGaNoboruGame";
 
 int globalTexture[30];
-float buffer;
+float Fbuffer;
+int Ibuffer;
 Vector2 Vbuffer;
 
 // Windowsアプリでのエントリーポイント(main関数)

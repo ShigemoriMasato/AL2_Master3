@@ -22,13 +22,3 @@ bool CL::BtP(Object* obj, Vector2 point) {
 	}
 
 }
-
-bool CL::CTP(Object* obj, Vector2 point)
-{
-	if ((obj->GetPos().x - point.x) * (obj->GetPos().x - point.x) + (obj->GetPos().y - point.y) * (obj->GetPos().y - point.y) <= obj->GetScale().x * obj->GetSize().x) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
