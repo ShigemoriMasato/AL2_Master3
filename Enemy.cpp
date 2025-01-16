@@ -27,6 +27,10 @@ void PlayScene::EnemysUpdate() {
 		Fbuffer = 10;
 	}
 
+	if (player_->GetLevel() > 15) {
+		gm_->enemyFrame2_++;
+	}
+
 	if (gm_->enemyFrame_ > int(Fbuffer)) {
 		Enemy enemy;
 		enemy.Initialize(kRevolution, 2.0f, -2.0f, -1.0f, 360, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kQuad, kFillModeSolid, 0x55a0a0ff);
@@ -50,14 +54,22 @@ void PlayScene::EnemysUpdate() {
 		enemy.SReady(kSRT, gm_->bright_, camera_);
 		enemys_.push_back(enemy);
 
-		enemy.Initialize(kRevolution, 4.0f, -2.0f, -1.0f, 360, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kQuad, kFillModeSolid, 0x55a0a0ff);
-		enemy.SReady(kSRT, gm_->bright_, camera_);
-		enemys_.push_back(enemy);
-		enemy.Initialize(kRevolution, 4.0f, 2.0f, -1.0f, -360, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kQuad, kFillModeSolid, 0x55a0a0ff);
-		enemy.SReady(kSRT, gm_->bright_, camera_);
-		enemys_.push_back(enemy);
+		if (player_->GetLevel() < 15) {
+			enemy.Initialize(kRevolution, 4.0f, -2.0f, -1.0f, 360, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kQuad, kFillModeSolid, 0x55a0a0ff);
+			enemy.SReady(kSRT, gm_->bright_, camera_);
+			enemys_.push_back(enemy);
+			enemy.Initialize(kRevolution, 4.0f, 2.0f, -1.0f, -360, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kQuad, kFillModeSolid, 0x55a0a0ff);
+			enemy.SReady(kSRT, gm_->bright_, camera_);
+			enemys_.push_back(enemy);
+		}
 
 		gm_->enemyFrame_ = 0;
+	}
+
+	if (gm_->enemyFrame2_ > 20) {
+		gm_->enemyFrame2_ = 0;
+
+		//TODO新しい敵を作りましょう
 	}
 
 	for (int i = 0; i < enemys_.size(); i++) {

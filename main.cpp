@@ -3,7 +3,7 @@
 #include <time.h>
 #include "PlayScene.h"
 
-const char kWindowTitle[] = "LC1A_10_シゲモリ_マサト_AnkoGaNoboruGame";
+const char kWindowTitle[] = "AL2_EX1_Anko_Ga_Noboru_Game";
 
 int globalTexture[30];
 float Fbuffer;
