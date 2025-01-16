@@ -1,40 +1,38 @@
 #include <Novice.h>
-#include "Player.h"
+#include <math.h>
+#include <time.h>
+#include "PlayScene.h"
 
-const char kWindowTitle[] = "学籍番号";
+const char kWindowTitle[] = "AL2_EX1_Anko_Ga_Noboru_Game";
 
 int globalTexture[30];
-float buffer;
+float Fbuffer;
+int Ibuffer;
 Vector2 Vbuffer;
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ライブラリの初期化
-	Novice::Initialize(kWindowTitle, 1280, 720);
+	Novice::Initialize(kWindowTitle, WinSizeWidth, WinSizeHeight);
 
-	Player* player = new Player();
-	GameManager* gm = new GameManager();
-	Camera* camera = new Camera();
+	PlayScene* playscene = new PlayScene();
 
-	// キー入力結果を受け取る箱
-	char keys[256] = {0};
-	char preKeys[256] = {0};
+	globalTexture[kTest_GH] = Novice::LoadTexture("./NoviceResources/white1x1.png");
+	globalTexture[kParticle_GH] = Novice::LoadTexture("./Resources/particle.png");
+
+	srand(int(time(nullptr)));
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
 		// フレームの開始
 		Novice::BeginFrame();
 
-		// キー入力を受け取る
-		memcpy(gm->preKeys_, gm->keys_, 256);
-		Novice::GetHitKeyStateAll(gm->keys_);
-
 		///
 		/// ↓更新処理ここから
 		///
-
-		player->Update(gm, camera);
+		
+		playscene->Update();
 
 		///
 		/// ↑更新処理ここまで
@@ -44,17 +42,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
-		player->Draw();
+		playscene->Draw();
 
 		///
 		/// ↑描画処理ここまで
 		///
 
+		//R押すとゲームをリセット
+		if (playscene->GetGameManager()->keys_[DIK_R] && !playscene->GetGameManager()->preKeys_[DIK_R]) {
+			playscene->GetGameManager()->bSetting_ = kBlack;
+		}
+
+		if (playscene->GetGameManager()->bright_ == 0) {
+			playscene->initialize = true;
+		}
+
 		// フレームの終了
 		Novice::EndFrame();
 
 		// ESCキーが押されたらループを抜ける
-		if (preKeys[DIK_ESCAPE] == 0 && keys[DIK_ESCAPE] != 0) {
+		if (playscene->GetGameManager()->preKeys_[DIK_ESCAPE] == 0 && playscene->GetGameManager()->keys_[DIK_ESCAPE] != 0) {
 			break;
 		}
 	}

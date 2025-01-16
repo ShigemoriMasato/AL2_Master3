@@ -15,7 +15,7 @@ public:
 	/// <param name="x">カメラのワールド中心座標</param>
 	/// <param name="y">カメラのワールド中心座標</param>
 	/// <param name="ratio">カメラの拡大率</param>
-	void Update(float x = WinSizeWidth / 2, float y = WinSizeHeight / 2, float ratio = 1.0f);
+	void Update(float ratio = 1.0f);
 
 	/// <summary>
 	/// カメラの行列をもってくる
@@ -23,14 +23,10 @@ public:
 	/// <returns>カメラ行列</returns>
 	Matrix3x3 GetCameraMatrix();
 
-private:
-	/// <summary>
-	/// カメラの座標から行列を作る
-	/// </summary>
-	/// <param name="pos"></param>
-	/// <returns></returns>
-	Matrix3x3 MakeCameraMatrix(Vector2 pos);
+	Vector2 pos_;		//カメラの座標
 
+private:
+	
 	/// <summary>
 	///	 正規化した状態の行列を作る
 	/// </summary>

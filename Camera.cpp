@@ -3,21 +3,9 @@
 
 Camera::Camera() {
 
+	pos_ = { 0.0f, -360.0f };
 	Update();
 
-}
-
-Matrix3x3 Camera::MakeCameraMatrix(Vector2 pos) {
-	//ビュー行列の作成
-	Matrix3x3 ans = {
-		{
-			{1,0,0},
-			{0,1,0},
-			{pos.x, pos.y, 1}
-		}
-	};
-
-	return ans;
 }
 
 Matrix3x3 Camera::MakeOrthographicProjectionMatirx(Vector2 LT, Vector2 RB) {
@@ -33,29 +21,28 @@ Matrix3x3 Camera::MakeOrthographicProjectionMatirx(Vector2 LT, Vector2 RB) {
 	return ans;
 }
 
-Matrix3x3 Camera::MakeViewportMatrix(Vector2 winSize, Vector2 LT) {
+Matrix3x3 Camera::MakeViewportMatrix(Vector2 winSize, Vector2 localLT) {
 	//ビューポート変換用行列を作成
 	Matrix3x3 ans = {
 		{
 			{winSize.x / 2, 0, 0},
 			{0, -winSize.y / 2, 0},
-			{LT.x + winSize.x / 2, LT.y + winSize.y / 2, 1}
+			{localLT.x + winSize.x / 2, localLT.y + winSize.y / 2, 1}
 		}
 	};
 
 	return ans;
 }
 
-void Camera::Update(float x, float y, float ratio) {
+void Camera::Update(float ratio) {
 	//各々のパラメータをVector2に代入
-	Vector2 pos = { x - this->winSize_.x / 2, this->world_.y - y - this->winSize_.y / 2 };
-	Vector2 LT = { -this->winSize_.x / 2, this->winSize_.y / 2 };
-	Vector2 RB = { this->winSize_.x / 2, -this->winSize_.y / 2 };
-	Vbuffer = { this->winSize_.x * ratio, this->winSize_.y * ratio };
+	Vector2 LT = { -WinSizeWidth / 2, WinSizeHeight / 2 };
+	Vector2 RB = { WinSizeWidth / 2, -WinSizeHeight / 2 };
+	Vbuffer = { 640.0f - 640.0f * ratio, 360.0f * ratio };
 
 	//カメラのマトリックスを作成
-	this->matrix_ = M::Multiply(M::Multiply(MakeCameraMatrix(pos), MakeOrthographicProjectionMatirx(LT, RB)), MakeViewportMatrix(Vbuffer, LT));
-
+	matrix_ = M::Multiply(M::Multiply(M::Inverse(M::MakeTransformMatrix(pos_.x, pos_.y)), MakeOrthographicProjectionMatirx(LT, RB)), MakeViewportMatrix({WinSizeWidth * ratio, WinSizeHeight * ratio}, Vbuffer));
+	
 }
 
 Matrix3x3 Camera::GetCameraMatrix() {

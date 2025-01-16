@@ -1,4 +1,5 @@
 ﻿#include "Vector.h"
+#include "Object.h"
 #include <assert.h>
 #include <math.h>
 
@@ -20,7 +21,7 @@ Matrix3x3 M::Multiply(Matrix3x3 matrix1, Matrix3x3 matrix2) {
 
 Matrix3x3 M::Inverse(Matrix3x3 matrix) {
 
-	float abc = matrix.m_[0][0] * matrix.m_[1][1] * matrix.m_[2][2] + matrix.m_[0][1] * matrix.m_[1][2] * matrix.m_[2][0] + matrix.m_[0][2] * matrix.m_[1][0] * matrix.m_[2][1] -
+	Fbuffer = matrix.m_[0][0] * matrix.m_[1][1] * matrix.m_[2][2] + matrix.m_[0][1] * matrix.m_[1][2] * matrix.m_[2][0] + matrix.m_[0][2] * matrix.m_[1][0] * matrix.m_[2][1] -
 		matrix.m_[0][2] * matrix.m_[1][1] * matrix.m_[2][0] - matrix.m_[0][1] * matrix.m_[1][0] * matrix.m_[2][2] - matrix.m_[0][0] * matrix.m_[1][2] * matrix.m_[2][1];
 
 	matrix = { {{matrix.m_[1][1] * matrix.m_[2][2] - matrix.m_[1][2] * matrix.m_[2][1],-matrix.m_[0][1] * matrix.m_[2][2] + 
@@ -32,7 +33,7 @@ Matrix3x3 M::Inverse(Matrix3x3 matrix) {
 
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
-			matrix.m_[i][j] /= abc;
+			matrix.m_[i][j] /= Fbuffer;
 		}
 	}
 
@@ -44,17 +45,17 @@ Vector2 M::Transform(Vector2 vector, Matrix3x3 matrix) {
 
 	ans.x = vector.x * matrix.m_[0][0] + vector.y * matrix.m_[1][0] + 1.0f * matrix.m_[2][0];
 	ans.y = vector.x * matrix.m_[0][1] + vector.y * matrix.m_[1][1] + 1.0f * matrix.m_[2][1];
-	float w = vector.x * matrix.m_[0][2] + vector.y * matrix.m_[1][2] + 1.0f * matrix.m_[2][2];
-	assert(w != 0.0f);
-	ans.x /= w;
-	ans.y /= w;
+	Fbuffer = vector.x * matrix.m_[0][2] + vector.y * matrix.m_[1][2] + 1.0f * matrix.m_[2][2];
+	assert(Fbuffer != 0.0f);
+	ans.x /= Fbuffer;
+	ans.y /= Fbuffer;
 	return ans;
 
 }
 
 Matrix3x3 M::MakeRotateMatrix(float theta) {
 
-	return {
+	Matrix3x3 ans = {
 		{
 			{cosf(theta), sinf(theta), 0},
 			{-sinf(theta), cosf(theta), 0},
@@ -62,6 +63,7 @@ Matrix3x3 M::MakeRotateMatrix(float theta) {
 		}
 	};
 
+	return ans;
 }
 
 Matrix3x3 M::MakeTransformMatrix(float x, float y) {
