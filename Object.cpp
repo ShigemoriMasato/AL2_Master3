@@ -83,13 +83,8 @@ void Object::AdjustColor(int bright) {
 	float ratio = float(this->bright_) / 255;		//オブジェクト固有の明るさ
 	ratio *= float(bright) / 255;					//ワールド全体の明るさ
 
-	//明るさの適用
-	this->red_ = int(roundf(this->red_ * ratio));
-	this->green_ = int(roundf(this->green_ * ratio));
-	this->blue_ = int(roundf(this->blue_ * ratio));
-
 	//カラーに当てはめる
-	this->color_ = (this->red_ << 24) + (this->green_ << 16) + (this->blue_ << 8) + (this->alpha_);
+	this->color_ = (int(roundf(this->red_ * ratio)) << 24) + (int(roundf(this->green_ * ratio)) << 16) + (int(roundf(this->blue_ * ratio)) << 8) + (this->alpha_);
 }
 
 void Object::Ready(MatrixMode mode, int bright, Camera* const camera) {
@@ -118,7 +113,7 @@ void Object::Ready(MatrixMode mode, int bright, Camera* const camera) {
 }
 
 //================================
-//	アクセサーメソッド
+//T	アクセサーメソッド
 //================================
 
 Vector2 Object::GetPos() const {
@@ -127,6 +122,18 @@ Vector2 Object::GetPos() const {
 
 Vector2 Object::GetVelocity() {
 	return this->velocity_;
+}
+
+bool Object::GetIsActive() const {
+	return this->isActive_;
+}
+
+Vector2 Object::GetSize() const {
+	return this->size_;
+}
+
+Vector2 Object::GetScale() const {
+	return this->scale_;
 }
 
 void Object::SetPos(Vector2 pos) {
@@ -271,10 +278,10 @@ void Shape::SReady(MatrixMode mode, int bright, Camera* const camera) {
 
 			break;
 		case kSTR:
-			//ST
-			this->matrix_ = M::Multiply(M::MakeScaleMatrix(this->scale_.x, this->scale_.y), M::MakeTransformMatrix(this->parentPos_.x, this->parentPos_.y));
+			//SRT
+			this->matrix_ = M::Multiply(M::Multiply(M::MakeScaleMatrix(this->scale_.x, this->scale_.y), M::MakeRotateMatrix(theta_)), M::MakeTransformMatrix(this->parentPos_.x, this->parentPos_.y));
 			//R
-			this->matrix_ = M::Multiply(this->matrix_, M::MakeRotateMatrix(this->theta_));
+			this->matrix_ = M::Multiply(this->matrix_, M::MakeRotateMatrix(this->rotateTheta_));
 			//中心ずらす用
 			this->matrix_ = M::Multiply(this->matrix_, M::MakeTransformMatrix(this->rotatePos_.x, this->rotatePos_.y));
 

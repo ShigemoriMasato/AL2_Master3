@@ -26,9 +26,16 @@ public:
 	/// </summary>
 	void EnemysUpdate();
 
+	/// <summary>
+	/// ゲームオーバーの時の更新処理
+	/// </summary>
+	void EndUpdate();
+
 	Player* GetPlayer();
 	Camera* GetCamera();
 	GameManager* GetGameManager();
+
+	bool initialize;
 
 private:
 	//背景
@@ -44,6 +51,10 @@ private:
 	Share* share_;
 	Ground* ground_;
 	float cT;
+
+	int cooltime;		//ゲームオーバーで使う雑なクールタイム
+	Shape window;		//背景
+	float windT;		//背景制御用
 
 	//Emitter
 	std::vector<SEmitter> sEmitter_;

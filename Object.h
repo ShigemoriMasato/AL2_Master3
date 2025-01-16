@@ -56,6 +56,21 @@ public:
 	Vector2 GetVelocity();
 
 	/// <summary>
+	/// isActiveを呼び出す
+	/// </summary>
+	bool GetIsActive() const;
+
+	/// <summary>
+	/// sizeを呼び出す
+	/// </summary>
+	Vector2 GetSize() const;
+
+	/// <summary>
+	/// scaleを呼び出す
+	/// </summary>
+	Vector2 GetScale() const;
+
+	/// <summary>
 	/// ポジションをぶち込む
 	/// </summary>
 	void SetPos(Vector2 pos);
@@ -114,6 +129,7 @@ protected:
 	Vector2 size_{};			//オブジェクトの大きさ
 	Vector2 scale_{};			//プレイヤーの大きさの倍率
 	Vector2 rotatePos_{};		//kSTR行列の中心
+	float rotateTheta_{};		//kSTR行列の回転角度
 	Vector2 velocity_{};		//速度
 	Vector2 direction_{};		//向いている方向
 	float speed_{};				//速さ

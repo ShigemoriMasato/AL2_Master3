@@ -13,6 +13,8 @@ public:
 
 	Player();
 
+	void Initialize();
+
 	void Update(GameManager* gm, Camera* camera, TEmitter* landemit, Ground* ground);
 
 	void FallExtend();
@@ -21,8 +23,13 @@ public:
 
 	Shape GetCollition() const;
 	int GetLevel() const;
+	bool GetIsAlive() const;
 
 	void SetIsAlive(bool isAlive);
+	void SetIsStart(bool isStart);
+	void SetLevel(int level) {
+		this->level_ = level;
+	}
 
 private:
 
@@ -35,6 +42,8 @@ private:
 
 	bool landing_;
 	bool isFExtend_;
-
+	bool isAlive_;
+	bool preIsAlive_;
+	bool isStart_;
 };
 

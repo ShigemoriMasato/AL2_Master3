@@ -39,6 +39,13 @@ PlayScene::PlayScene() {
 
 	background_->InitializeShape(WinSizeWidth / 2, WinSizeHeight / 2, 1280, 720, -1, 1, 1, 1, -1, -1, 1, -1, kQuad, kFillModeSolid, 0x000000ff);
 
+	window.InitializeShape(0, -480, 400, 320, -1, 1, 1, 1, -1, -1, 1, -1, kQuad, kFillModeSolid, 0x555555ff);
+
+	gm_->bright_ = 0;
+	gm_->bSetting_ = kBright;
+
+	initialize = true;
+
 }
 
 
@@ -49,6 +56,24 @@ void PlayScene::Update() {
 	memcpy(gm_->preKeys_, gm_->keys_, 256);
 	Novice::GetHitKeyStateAll(gm_->keys_);
 
+	if (initialize) {
+		initialize = false;
+
+		gm_->bSetting_ = kBright;
+		gm_->bright_ = 0;
+
+		player_->Initialize();
+
+		cooltime = 0;
+		windT = 0.0f;
+
+		share_->Initialize();
+
+		window.SetColor(0);
+
+		enemys_.clear();
+	}
+
 	//LandingEmitterの探索
 	TEmitter* landing{};
 	for (int i = 0; i < tEmitter_.size(); i++) {
@@ -56,6 +81,48 @@ void PlayScene::Update() {
 			landing = &tEmitter_[i];
 			break;
 		}
+	}
+
+	//ゲーム全体の明るさ処理
+	switch (gm_->bSetting_) {
+	case kBright:
+
+		if (gm_->bright_ < 255) {
+			gm_->bright_ += 3;
+		}
+
+		if (gm_->bright_ > 255) {
+			gm_->bright_ = 255;
+		}
+
+		break;
+
+	case kDark:
+
+
+		if (gm_->bright_ < 100) {
+			gm_->bright_ += 3;
+		} else if (gm_->bright_ > 100) {
+			gm_->bright_ -= 3;
+		}
+
+		if (gm_->bright_ < 103 && gm_->bright_ > 97) {
+			gm_->bright_ = 100;
+		}
+
+		break;
+
+	case kBlack:
+
+		if (gm_->bright_ > 0) {
+			gm_->bright_ -= 3;
+		}
+
+		if (gm_->bright_ < 0) {
+			gm_->bright_ = 0;
+		}
+
+		break;
 	}
 
 	/*******************Player*******************/
@@ -67,7 +134,7 @@ void PlayScene::Update() {
 		camera_->pos_.y = -40;
 	}
 
-	if (gm_->keys_[DIK_LSHIFT]) {
+	if (gm_->keys_[DIK_RSHIFT]) {
 		
 		if (cT > 0) {
 			cT -= 0.1f;
@@ -114,6 +181,10 @@ void PlayScene::Update() {
 	/*******************BackGround*******************/
 	background_->SReady(kScreen, gm_->bright_, camera_);
 
+	/*******************GameOver*******************/
+	if (!player_->GetIsAlive() && player_->GetPos().y < -240.0f) {
+		EndUpdate();
+	}
 
 	/*******************Particle*******************/
 	//SParticleの処理
@@ -132,6 +203,34 @@ void PlayScene::Update() {
 
 }
 
+void PlayScene::EndUpdate() {
+	
+	cooltime++;
+
+	window.SetColor(0x555555ff);
+
+	if(cooltime > 60) {
+		windT += 0.05f;
+
+		if(windT > float(M_PI_2)) {
+			windT = float(M_PI_2);
+		}
+
+		window.SetPos({
+			640.0f,
+			-360.0f * (1.0f - sinf(windT)) + 360.0f * sinf(windT)
+			});
+
+		Novice::ScreenPrintf(520, int(window.GetPos().y - 10.0f), "Game Over");
+		Novice::ScreenPrintf(550, int(window.GetPos().y + 40.0f), "Your climbed Num:	%d", player_->GetLevel());
+
+		window.SReady(kScreen, gm_->bright_, camera_);
+	}
+
+}
+
+
+
 void PlayScene::Draw() {
 
 	//背景
@@ -147,44 +246,10 @@ void PlayScene::Draw() {
 
 	share_->Draw();
 
-}
-
-void PlayScene::EnemysUpdate()
-{
-	//発生処理
-	gm_->enemyFrame_++;
-
-	Fbuffer = 60.0f - float(player_->GetLevel() / 2);
-	if (Fbuffer < 10) {
-		Fbuffer = 10;
+	if (!player_->GetIsAlive() && player_->GetPos().y <= -1000.0f) {
+		window.Draw();
 	}
 
-	if(gm_->enemyFrame_ > Fbuffer) {
-
-
-		Enemy enemy;
-		enemy.Initialize(kBullet, 3, 0, -1, 0, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kEllipse, kFillModeSolid, 0xaa5555ff);
-		enemy.SReady(kSRT, gm_->bright_, camera_);
-		enemys_.push_back(enemy);
-		enemy.Initialize(kBullet, 3, 0, -1, -320, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kEllipse, kFillModeSolid, 0xaa5555ff);
-		enemy.SReady(kSRT, gm_->bright_, camera_);
-		enemys_.push_back(enemy);
-		enemy.Initialize(kBullet, 3, 0, -1, 320, player_->GetPos().y + 1280, 32, 32, -1, 1, 1, 1, -1, -1, 1, -1, kEllipse, kFillModeSolid, 0xaa5555ff);
-		enemy.SReady(kSRT, gm_->bright_, camera_);
-		enemys_.push_back(enemy);
-
-		gm_->enemyFrame_ = 0;
-
-		Ibuffer++;
-	}
-
-	if (Ibuffer > 2) {
-
-	}
-
-	for (int i = 0; i < enemys_.size(); i++) {
-		enemys_[i].AllUpdate(gm_, camera_, this);
-	}
 }
 
 

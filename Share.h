@@ -209,6 +209,11 @@ public:
 	/// <param name="index">particlesの中のparticleの現在位置。同じく消去に用いる</param>
 	void TextureParticleUpdate(PlayScene* ps);
 
+	/// <summary>
+	/// ゲームの始まりに必要な初期化処理
+	/// </summary>
+	void Initialize();
+
 
 	void Draw();
 

@@ -23,10 +23,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	srand(int(time(nullptr)));
 
-	// キー入力結果を受け取る箱
-	char keys[256] = {0};
-	char preKeys[256] = {0};
-
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
 		// フレームの開始
@@ -35,7 +31,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
-
+		
 		playscene->Update();
 
 		///
@@ -52,11 +48,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↑描画処理ここまで
 		///
 
+		//R押すとゲームをリセット
+		if (playscene->GetGameManager()->keys_[DIK_R] && !playscene->GetGameManager()->preKeys_[DIK_R]) {
+			playscene->GetGameManager()->bSetting_ = kBlack;
+		}
+
+		if (playscene->GetGameManager()->bright_ == 0) {
+			playscene->initialize = true;
+		}
+
 		// フレームの終了
 		Novice::EndFrame();
 
 		// ESCキーが押されたらループを抜ける
-		if (preKeys[DIK_ESCAPE] == 0 && keys[DIK_ESCAPE] != 0) {
+		if (playscene->GetGameManager()->preKeys_[DIK_ESCAPE] == 0 && playscene->GetGameManager()->keys_[DIK_ESCAPE] != 0) {
 			break;
 		}
 	}

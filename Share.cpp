@@ -170,6 +170,13 @@ void Share::TextureParticleUpdate(PlayScene* ps) {
 }
 
 
+void Share::Initialize() {
+	this->sParticle_.clear();
+	this->tParticle_.clear();
+
+
+}
+
 void Share::Draw() {
 
 	for (int i = 0; i < sParticle_.size(); i++) {

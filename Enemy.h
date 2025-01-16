@@ -14,6 +14,10 @@ enum EnemyType {
 
 class Enemy : public Shape {
 public:
+	Enemy() {
+		initialize_ = true;
+		type_ = kBullet;
+	};
 
 	void Initialize(EnemyType type, float speed, float directionx, float directiony, float x, float y, float sizex, float sizey,
 		float LTx = -1, float LTy = 1, float RTx = 1, float RTy = 1,
